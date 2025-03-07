@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 10px; }
+    input, button, select { margin: 5px 0; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <h3>Walmart Scraper</h3>
+  <button id="btnScrapeData">Scrape New Data</button>
+  <button id="btnDownloadData" class="hidden">Download Saved Data (Legacy)</button> 
+
+  <div id="scrapeOptions" class="hidden">
+    <label for="searchInput">Enter Search Query or URL:</label><br>
+    <input type="text" id="searchInput" placeholder="e.g. tide or https://www.walmart.com/..." size="40"><br>
+    
+    <!-- New brand exclusion input -->
+    <label>Exclude Brands (comma-separated):</label><br>
+    <input type="text" id="excludeBrandsInput" placeholder="Great Value, Equate, Parent's Choice"><br>
+    
+    <!-- Updated shipping, pickup, and delivery filters -->
+    <label>
+      Show only items with shipping <strong>not</strong> available (exclude shipping-available)?
+    </label>
+    <input type="checkbox" id="shippingNA"><br>
+    
+    <label>
+      Show only items with pickup <strong>not</strong> available (exclude pickup-available)?
+    </label>
+    <input type="checkbox" id="pickupNA"><br>
+    
+    <label>
+      Show only items with delivery <strong>not</strong> available (exclude delivery-available)?
+    </label>
+    <input type="checkbox" id="deliveryNA"><br>
+    
+    <label for="fulfillToday">Fulfillment Today?</label>
+    <input type="checkbox" id="fulfillToday"><br>
+    
+    <button id="btnStartScrape">Start Scrape</button>
+  </div>
+
+  <hr>
+  <button id="btnLoadVersions">Load Saved Versions</button>
+  <select id="downloadVersionSelect"></select>
+  <button id="btnDownloadSelected">Download Selected Version</button>
+
+  <div id="status">Idle</div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

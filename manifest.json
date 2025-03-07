@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "Walmart Scraper",
+  "version": "1.1",
+  "permissions": [
+    "tabs",
+    "storage",
+    "downloads",
+    "scripting"
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'self' https://bestdigisellers.com"
+  },
+  "host_permissions": [
+    "https://www.walmart.com/*",
+    "https://script.google.com/*",
+    "https://bestdigisellers.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Walmart Scraper"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.walmart.com/search*",
+        "https://www.walmart.com/browse/*",
+        "https://www.walmart.com/cp/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://www.walmart.com/ip/*"],
+      "js": ["product_page.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
