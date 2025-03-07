@@ -1,53 +1,125 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <title>Walmart Scraper</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 10px; }
-    input, button, select { margin: 5px 0; }
-    .hidden { display: none; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 15px;
+      width: 350px;
+      background-color: #f7faff;
+      color: #333;
+    }
+
+    h3 {
+      margin-top: 0;
+      font-size: 18px;
+      color: #0055c7;
+    }
+
+    input[type="text"], select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      margin-top: 5px;
+      margin-bottom: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #005bb5;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .option-group {
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      background-color: #ffffff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .option-group label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .status-message {
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
+      color: #007bff;
+    }
   </style>
 </head>
 <body>
-  <h3>Walmart Scraper</h3>
-  <button id="btnScrapeData">Scrape New Data</button>
-  <button id="btnDownloadData" class="hidden">Download Saved Data (Legacy)</button> 
+  <h3>🛒 Walmart Scraper</h3>
+
+  <button id="btnScrapeData">Start New Scrape</button>
+  <button id="btnDownloadData">Download Latest Data (CSV)</button>
 
   <div id="scrapeOptions" class="hidden">
-    <label for="searchInput">Enter Search Query or URL:</label><br>
-    <input type="text" id="searchInput" placeholder="e.g. tide or https://www.walmart.com/..." size="40"><br>
-    
-    <!-- New brand exclusion input -->
-    <label>Exclude Brands (comma-separated):</label><br>
-    <input type="text" id="excludeBrandsInput" placeholder="Great Value, Equate, Parent's Choice"><br>
-    
-    <!-- Updated shipping, pickup, and delivery filters -->
-    <label>
-      Show only items with shipping <strong>not</strong> available (exclude shipping-available)?
-    </label>
-    <input type="checkbox" id="shippingNA"><br>
-    
-    <label>
-      Show only items with pickup <strong>not</strong> available (exclude pickup-available)?
-    </label>
-    <input type="checkbox" id="pickupNA"><br>
-    
-    <label>
-      Show only items with delivery <strong>not</strong> available (exclude delivery-available)?
-    </label>
-    <input type="checkbox" id="deliveryNA"><br>
-    
-    <label for="fulfillToday">Fulfillment Today?</label>
-    <input type="checkbox" id="fulfillToday"><br>
-    
-    <button id="btnStartScrape">Start Scrape</button>
+    <label for="searchInput">Search Query or URL:</label>
+    <input type="text" id="searchInput" placeholder="e.g., laptops or paste URL">
+
+    <label for="excludeBrands">Exclude Brands (comma-separated):</label>
+    <input type="text" id="excludeBrands" placeholder="e.g., Samsung, Apple">
+
+    <div class="option-group">
+      <label>Only items without shipping available
+        <input type="checkbox" id="shippingNA">
+      </label>
+    </div>
+
+    <div class="option-group">
+      <label>
+        Only Pickup <strong>Not</strong> Available
+        <input type="checkbox" id="pickupNA">
+      </label>
+    </div>
+
+    <div class="option-group">
+      <label>
+        Only Delivery <strong>Not</strong> Available
+        <input type="checkbox" id="deliveryNA">
+      </label>
+    </div>
+
+    <div class="option-group">
+      <label>
+        Fulfillment Today
+        <input type="checkbox" id="fulfillToday">
+      </label>
+    </div>
+
+    <button id="btnStartScrape">Start Scraping</button>
   </div>
 
-  <hr>
-  <button id="btnLoadVersions">Load Saved Versions</button>
-  <select id="downloadVersionSelect"></select>
-  <button id="btnDownloadSelected">Download Selected Version</button>
+  <button id="btnLoadOptions">Load Scraping Options</button>
+  <button id="btnLoadPrevious">Load Previous Data</button>
+  <button id="btnDownloadData">Download Latest Data</button>
 
-  <div id="status">Idle</div>
+  <div class="status-message" id="status">Ready to start</div>
 
   <script src="popup.js"></script>
 </body>
