@@ -9,12 +9,12 @@
     "scripting"
   ],
   "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'self' https://bestdigisellers.com"
+    "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'self' http://localhost:* https://bestdigisellers.com"
   },
   "host_permissions": [
+    "http://localhost:*",
     "https://www.walmart.com/*",
-    "https://script.google.com/*",
-    "https://bestdigisellers.com/*"
+    "https://script.google.com/*"
   ],
   "background": {
     "service_worker": "background.js"

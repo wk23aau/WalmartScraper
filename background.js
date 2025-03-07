@@ -30,33 +30,32 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     sendResponse({ status: 'Processing products...' });
 
   } else if (message.type === 'productDetails') {
-    // 3) Received data from a product page
     console.log('[Background] Received product details:', message.data);
     const tabId = sender.tab && sender.tab.id;
     let originalProduct = {};
-
     if (tabId && tabProductMapping[tabId]) {
       originalProduct = tabProductMapping[tabId];
       delete tabProductMapping[tabId];
     }
-
+  
     let finalData = { ...message.data };
-    // Merge in the original wp_id if present
-    if (originalProduct.wp_id) {
-      finalData.wp_id = originalProduct.wp_id;
+  
+    // Preserve product_id: if originalProduct has product_id, use it.
+    // Otherwise, if finalData doesn't have a product_id and wp_id exists, use that.
+    if (originalProduct.product_id) {
+      finalData.product_id = originalProduct.product_id;
+    } else if (!finalData.product_id && originalProduct.wp_id) {
+      finalData.product_id = originalProduct.wp_id;
     }
-    // Optionally remove product_id since the URL is built using wp_id
-    if (finalData.wp_id) {
-      delete finalData.product_id;
-    }
-
+    
+    // We don't need wp_id any further, so we remove it.
+    delete finalData.wp_id;
+  
     results.push(finalData);
     console.log('[Background] Results updated:', results);
-
-    // Proceed to next product
+  
     processNextProduct();
     sendResponse({ status: 'Product processed.' });
-
   } else if (message.action === 'downloadCSV') {
     // 4) Download CSV for either the legacy results or a chosen timestamp
     if (message.timestamp) {
@@ -128,12 +127,12 @@ function processNextProduct() {
 }
 
 function sendDataToGoogleSheets(data) {
-  const scriptURL = "https://script.google.com/macros/s/AKfycbykp1glM0xLjWaqebSNsFBqWwGEZ9BbLVSMTioCObGK5lFo_tpSrNIQ8PhIJ9PnWlqr/exec";
-  const proxyUrl = "https://bestdigisellers.com/proxy.php?url=" + encodeURIComponent(scriptURL);
+  // Change this URL to point to your local server
+  const localServerURL = "http://localhost:3000/sheet-proxy";
   
-  console.log('[Background] Submitting data to Google Sheets via PHP proxy...');
+  console.log('[Background] Submitting data to Google Sheets via local server proxy...');
   
-  fetch(proxyUrl, {
+  fetch(localServerURL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
